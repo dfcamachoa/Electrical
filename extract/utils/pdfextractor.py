@@ -99,7 +99,7 @@ def unpivot_table(df):
         df_unpivoted['ASSEMBLY'] = df_unpivoted['ASSEMBLY'].str.replace('QTY', '').str.strip()
         df_unpivoted = df_unpivoted[df_unpivoted['QUANTITY'] != '-']
         material_by_assembly.extend(df_unpivoted[['ASSEMBLY', 'TPENG ITEM CODE', 'QUANTITY', 'UNIT']].to_dict('records'))
-        material_catalog.extend(df_unpivoted[['TPENG ITEM CODE', 'BILL OF MATERIAL']].to_dict('records'))
+        material_catalog.extend(df_unpivoted[['TPENG ITEM CODE', 'BILL OF MATERIAL', 'UNIT']].to_dict('records'))
         assemblies.extend(df_unpivoted['ASSEMBLY'].unique().tolist())
         unpivoted_dfs.append(df_unpivoted)
     

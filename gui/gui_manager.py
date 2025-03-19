@@ -27,7 +27,9 @@ class GuiManager:
         buttons = [
             ("Extract Electrical Lighting Assemblies", self.handle_extract),
             ("Detect Assemblies in Lighting Layouts", self.handle_cad),
-            ("Generate Lighting Material Take-Off", self.handle_mto)
+            ("Manage WBS", self.handle_wbs),
+            ("Generate Lighting Material Take-Off", self.handle_mto),
+            ("Format MTO to Excel Template", self.handle_format_mto)
         ]
 
         for text, command in buttons:
@@ -51,9 +53,19 @@ class GuiManager:
         success, message = self.processor.execute_cad()
         self.show_result(success, message)
 
+    def handle_wbs(self):
+        """Handle WBS button click"""
+        success, message = self.processor.manage_wbs()
+        self.show_result(success, message)
+
     def handle_mto(self):
         """Handle MTO button click"""
         success, message = self.processor.execute_mto()
+        self.show_result(success, message)
+    
+    def handle_format_mto(self):
+        """Handle format MTO button click"""
+        success, message = self.processor.format_mto_template()
         self.show_result(success, message)
 
     def run(self):
