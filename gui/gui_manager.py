@@ -13,7 +13,7 @@ class GuiManager:
         """Setup the GUI elements"""
         self.root.title("Electrical MTO Automation")
         self.root.iconbitmap('gui/ten.ico')
-        self.root.minsize(350, 175)
+        self.root.minsize(350, 200)  # Increased height to accommodate new button
 
         # Create main section
         self.subsection = tk.LabelFrame(self.root, text="Lighting MTO", padx=10, pady=10)
@@ -28,6 +28,7 @@ class GuiManager:
             ("Extract Electrical Lighting Assemblies", self.handle_extract),
             ("Detect Assemblies in Lighting Layouts", self.handle_cad),
             ("Manage WBS", self.handle_wbs),
+            ("Manage Design Allowance", self.handle_design_allowance),  # New button
             ("Generate Lighting Material Take-Off", self.handle_mto),
             ("Format MTO to Excel Template", self.handle_format_mto)
         ]
@@ -56,6 +57,11 @@ class GuiManager:
     def handle_wbs(self):
         """Handle WBS button click"""
         success, message = self.processor.manage_wbs()
+        self.show_result(success, message)
+        
+    def handle_design_allowance(self):
+        """Handle Design Allowance button click"""
+        success, message = self.processor.manage_design_allowance()
         self.show_result(success, message)
 
     def handle_mto(self):

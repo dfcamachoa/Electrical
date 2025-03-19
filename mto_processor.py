@@ -170,15 +170,8 @@ class MtoProcessor:
             success, message = self.group_materials()
             if not success:
                 return False, message
-            
-             # Format MTO data into Excel template
-            success, message = self.format_mto_template()
-            if not success:
-                # This is a warning but not a failure of the whole process
-                print(f"Warning: {message}")
-                return True, "MTO process completed successfully but Excel formatting failed"
-            
-            return True, "MTO process completed successfully with formatted Excel output"
+
+            return True, "MTO process completed successfully"
         except Exception as e:
             return False, f"MTO execution failed: {str(e)}"
         
@@ -217,3 +210,35 @@ class MtoProcessor:
             return success, message
         except Exception as e:
             return False, f"MTO formatting failed: {str(e)}"       
+        
+    
+    def manage_design_allowance(self):
+        """Open the Design Allowance manager window"""
+        try:
+            # Import here to avoid circular imports
+            from design_allowance_manager import DesignAllowanceManager, get_design_allowance
+
+            # Check current value for debugging
+            current_value = get_design_allowance(self.base_dir)
+            print(f"Current design allowance before opening manager: {current_value}%")
+
+            # Create a new root window for the Design Allowance manager
+            root = tk.Tk()
+            root.withdraw()  # Hide the root window
+
+            # Define callback to check value after closing
+            def on_close():
+                new_value = get_design_allowance(self.base_dir)
+                print(f"Design allowance after closing manager: {new_value}%")
+                root.destroy()
+
+            # Create and show the Design Allowance manager
+            manager = DesignAllowanceManager(root, self.base_dir, on_close_callback=on_close)
+
+            # Start the main loop
+            root.mainloop()
+
+            return True, "Design allowance management completed"
+        except Exception as e:
+            print(f"Exception in manage_design_allowance: {str(e)}")
+            return False, f"Design allowance management failed: {str(e)}"
